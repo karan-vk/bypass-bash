@@ -4,7 +4,7 @@
 [![Release](https://img.shields.io/github/v/release/karan-vk/shell-mcp?color=blue)](https://github.com/karan-vk/shell-mcp/releases)
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE-MIT)
 
-A blazingly fast, zero-overhead, highly performant Rust implementation of the [bad-bash-mcp](https://github.com/danroblewis/bad-bash-mcp) Model Context Protocol (MCP) server.
+A blazingly fast, zero-overhead, highly performant Rust implementation of the Model Context Protocol (MCP) shell server.
 
 Provides raw, unsandboxed bash shell execution for Claude Code, Antigravity CLI / AGY, Cursor, Windsurf, VS Code, Zed, and any MCP-compliant client.
 
@@ -43,7 +43,7 @@ Copy and paste this prompt directly into any AI Assistant (Claude Code, Antigrav
 
 ## ⚡ Performance Benchmarks: Rust vs Python Original
 
-| Metric | Python original (`uvx bad-bash-mcp`) | `shell-mcp` (Rust) | Improvement |
+| Metric | Python original | `shell-mcp` (Rust) | Improvement |
 | :--- | :--- | :--- | :--- |
 | **Startup Time** | ~450 ms (interpreter start + uvx) | **~1.2 ms** | **~375x faster** |
 | **Memory (RAM)** | ~35 - 50 MB | **< 3 MB** | **> 12x lighter** |
