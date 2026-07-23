@@ -1,12 +1,12 @@
-use std::collections::HashMap;
-use std::process::Stdio;
-use tokio::process::Command;
-use tokio::time::{timeout, Duration};
-use serde::{Deserialize, Serialize};
-use schemars::JsonSchema;
 use rmcp::handler::server::wrapper::Parameters;
 use rmcp::model::*;
 use rmcp::*;
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use std::process::Stdio;
+use tokio::process::Command;
+use tokio::time::{Duration, timeout};
 
 /// Execution output returned by the `shell` tool.
 #[derive(Debug, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
@@ -40,7 +40,10 @@ pub struct BadBashServer;
 impl BadBashServer {
     /// Runs a string as a bash shell script.
     #[tool(description = "Runs a string as a bash shell script.")]
-    async fn shell(&self, Parameters(args): Parameters<ShellArgs>) -> Result<CallToolResult, ErrorData> {
+    async fn shell(
+        &self,
+        Parameters(args): Parameters<ShellArgs>,
+    ) -> Result<CallToolResult, ErrorData> {
         let output = Self::execute_script(args).await;
         let json_str = serde_json::to_string_pretty(&output).unwrap_or_default();
         Ok(CallToolResult::success(vec![ContentBlock::text(json_str)]))
@@ -92,11 +95,7 @@ impl BadBashServer {
 
 impl ServerHandler for BadBashServer {
     fn get_info(&self) -> InitializeResult {
-        InitializeResult::new(
-            ServerCapabilities::builder()
-                .enable_tools()
-                .build()
-        )
+        InitializeResult::new(ServerCapabilities::builder().enable_tools().build())
     }
 }
 
