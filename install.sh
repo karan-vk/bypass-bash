@@ -2,10 +2,10 @@
 set -e
 
 # ==============================================================================
-# bypass-bash Interactive Installer & Multi-Environment MCP Configurator
+# shell-mcp Interactive Installer & Multi-Environment MCP Configurator
 # ==============================================================================
 
-REPO="karan-vk/bypass-bash"
+REPO="karan-vk/shell-mcp"
 
 info() {
     printf "\033[1;34m[INFO]\033[0m %s\n" "$1"
@@ -63,9 +63,9 @@ fi
 
 # Construct Download URL
 if [ "$OS" = "windows" ]; then
-    ASSET_NAME="bypass-bash-windows-amd64.zip"
+    ASSET_NAME="shell-mcp-windows-amd64.zip"
 else
-    ASSET_NAME="bypass-bash-$OS-$ARCH.tar.gz"
+    ASSET_NAME="shell-mcp-$OS-$ARCH.tar.gz"
 fi
 
 DOWNLOAD_URL="https://github.com/$REPO/releases/download/$TAG/$ASSET_NAME"
@@ -78,16 +78,16 @@ curl -fsSL "$DOWNLOAD_URL" -o "$TEMP_DIR/$ASSET_NAME" || error "Failed to downlo
 info "Extracting binary..."
 if [ "$OS" = "windows" ]; then
     unzip -q "$TEMP_DIR/$ASSET_NAME" -d "$TEMP_DIR"
-    mv "$TEMP_DIR/bypass-bash.exe" "$INSTALL_DIR/"
-    BINARY_PATH="$INSTALL_DIR/bypass-bash.exe"
+    mv "$TEMP_DIR/shell-mcp.exe" "$INSTALL_DIR/"
+    BINARY_PATH="$INSTALL_DIR/shell-mcp.exe"
 else
     tar -xzf "$TEMP_DIR/$ASSET_NAME" -C "$TEMP_DIR"
-    mv "$TEMP_DIR/bypass-bash" "$INSTALL_DIR/"
-    chmod +x "$INSTALL_DIR/bypass-bash"
-    BINARY_PATH="$INSTALL_DIR/bypass-bash"
+    mv "$TEMP_DIR/shell-mcp" "$INSTALL_DIR/"
+    chmod +x "$INSTALL_DIR/shell-mcp"
+    BINARY_PATH="$INSTALL_DIR/shell-mcp"
 fi
 
-success "Successfully installed bypass-bash to: $BINARY_PATH"
+success "Successfully installed shell-mcp to: $BINARY_PATH"
 
 # ==============================================================================
 # Helper to update JSON MCP configuration files (stripping comments if present)
@@ -121,7 +121,7 @@ if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
 if "mcpServers" not in data or not isinstance(data["mcpServers"], dict):
     data["mcpServers"] = {}
 
-data["mcpServers"]["bypass-bash"] = {
+data["mcpServers"]["shell-mcp"] = {
     "command": bin_path
 }
 
@@ -131,7 +131,7 @@ with open(file_path, "w", encoding="utf-8") as f:
 print(f"  \033[1;32m✓\033[0m Successfully updated: {file_path}")
 EOF
     else
-        warn "python3 not found; please manually add bypass-bash to $FILE"
+        warn "python3 not found; please manually add shell-mcp to $FILE"
     fi
 }
 
@@ -160,12 +160,12 @@ fi
 
 echo ""
 echo "================================================================================"
-echo "⚡ bypass-bash Interactive Agentic Environment Configurator"
+echo "⚡ shell-mcp Interactive Agentic Environment Configurator"
 echo "================================================================================"
 echo ""
 
 if [ "$HAS_TTY" -eq 1 ]; then
-    echo "Select target environments to configure with bypass-bash:"
+    echo "Select target environments to configure with shell-mcp:"
     echo ""
     echo "  [1] Claude Code / Claude Desktop  ($PATH_CLAUDE)"
     echo "  [2] Antigravity CLI / AGY / Gemini ($PATH_AGY)"
@@ -234,4 +234,4 @@ IFS="$OLD_IFS"
 echo ""
 success "Installation and environment configuration finished!"
 echo "Binary location: $BINARY_PATH"
-echo "================================================================================"
+echo "================================================================================"==="

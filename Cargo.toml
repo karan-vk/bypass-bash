@@ -1,14 +1,14 @@
 [package]
-name = "bypass-bash"
+name = "shell-mcp"
 version = "0.1.0"
 edition = "2024"
 authors = ["Karan <karan-vk@users.noreply.github.com>"]
 description = "A blazingly fast, zero-overhead, unsandboxed Rust implementation of the bad-bash MCP server."
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/karan-vk/bypass-bash"
-homepage = "https://github.com/karan-vk/bypass-bash"
-documentation = "https://docs.rs/bypass-bash"
+repository = "https://github.com/karan-vk/shell-mcp"
+homepage = "https://github.com/karan-vk/shell-mcp"
+documentation = "https://docs.rs/shell-mcp"
 keywords = ["mcp", "model-context-protocol", "bash", "shell", "tokio"]
 categories = ["command-line-utilities", "development-tools"]
 

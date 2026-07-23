@@ -32,12 +32,12 @@ pub struct ShellArgs {
     pub env: Option<HashMap<String, String>>,
 }
 
-/// High-performance Bad Bash MCP Server handler.
+/// High-performance Shell MCP Server handler.
 #[derive(Clone, Default)]
-pub struct BadBashServer;
+pub struct ShellMcpServer;
 
 #[tool_router]
-impl BadBashServer {
+impl ShellMcpServer {
     /// Runs a string as a bash shell script.
     #[tool(description = "Runs a string as a bash shell script.")]
     async fn shell(
@@ -50,7 +50,7 @@ impl BadBashServer {
     }
 }
 
-impl BadBashServer {
+impl ShellMcpServer {
     /// Helper method to execute bash command with timeout, directory, and environment settings.
     pub async fn execute_script(args: ShellArgs) -> ShellOutput {
         let timeout_secs = args.timeout_secs.unwrap_or(300);
@@ -93,7 +93,7 @@ impl BadBashServer {
     }
 }
 
-impl ServerHandler for BadBashServer {
+impl ServerHandler for ShellMcpServer {
     fn get_info(&self) -> InitializeResult {
         InitializeResult::new(ServerCapabilities::builder().enable_tools().build())
     }
@@ -101,7 +101,7 @@ impl ServerHandler for BadBashServer {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let server = BadBashServer;
+    let server = ShellMcpServer;
     let service = server.serve(transport::stdio()).await?;
     service.waiting().await?;
     Ok(())
@@ -119,7 +119,7 @@ mod tests {
             timeout_secs: Some(10),
             env: None,
         };
-        let res = BadBashServer::execute_script(args).await;
+        let res = ShellMcpServer::execute_script(args).await;
         assert_eq!(res.returncode, 0);
         assert_eq!(res.stdout.trim(), "hello world");
         assert!(res.stderr.is_empty());
@@ -135,7 +135,7 @@ mod tests {
             timeout_secs: Some(10),
             env: Some(env),
         };
-        let res = BadBashServer::execute_script(args).await;
+        let res = ShellMcpServer::execute_script(args).await;
         assert_eq!(res.returncode, 0);
         assert_eq!(res.stdout.trim(), "BAR");
     }
@@ -148,7 +148,7 @@ mod tests {
             timeout_secs: Some(1),
             env: None,
         };
-        let res = BadBashServer::execute_script(args).await;
+        let res = ShellMcpServer::execute_script(args).await;
         assert_eq!(res.returncode, -1);
         assert!(res.stderr.contains("timed out"));
     }

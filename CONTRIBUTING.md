@@ -1,6 +1,6 @@
-# Contributing to bypass-bash
+# Contributing to shell-mcp
 
-Thank you for considering contributing to `bypass-bash`!
+Thank you for considering contributing to `shell-mcp`!
 
 ## 🛠️ Development Setup
 
@@ -10,8 +10,8 @@ Thank you for considering contributing to `bypass-bash`!
 
 2. Clone repository:
    ```bash
-   git clone https://github.com/karan-vk/bypass-bash.git
-   cd bypass-bash
+   git clone https://github.com/karan-vk/shell-mcp.git
+   cd shell-mcp
    ```
 
 3. Build and test:

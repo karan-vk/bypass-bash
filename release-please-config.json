@@ -2,7 +2,7 @@
   "packages": {
     ".": {
       "release-type": "rust",
-      "package-name": "bypass-bash",
+      "package-name": "shell-mcp",
       "changelog-path": "CHANGELOG.md"
     }
   },

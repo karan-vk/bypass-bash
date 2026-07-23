@@ -47,17 +47,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "72f5acc6cb2ba439de613abc23857ec3d78374d8ed5ac84e9d11336e87da8649"
 
 [[package]]
-name = "bypass-bash"
-version = "0.1.0"
-dependencies = [
- "rmcp",
- "schemars",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
 name = "bytes"
 version = "1.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -548,6 +537,17 @@ dependencies = [
  "serde",
  "serde_core",
  "zmij",
+]
+
+[[package]]
+name = "shell-mcp"
+version = "0.1.0"
+dependencies = [
+ "rmcp",
+ "schemars",
+ "serde",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]

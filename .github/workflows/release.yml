@@ -17,23 +17,23 @@ jobs:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            artifact_name: bypass-bash
-            asset_name: bypass-bash-linux-amd64.tar.gz
+            artifact_name: shell-mcp
+            asset_name: shell-mcp-linux-amd64.tar.gz
 
           - os: macos-latest
             target: aarch64-apple-darwin
-            artifact_name: bypass-bash
-            asset_name: bypass-bash-macos-arm64.tar.gz
+            artifact_name: shell-mcp
+            asset_name: shell-mcp-macos-arm64.tar.gz
 
           - os: macos-latest
             target: x86_64-apple-darwin
-            artifact_name: bypass-bash
-            asset_name: bypass-bash-macos-amd64.tar.gz
+            artifact_name: shell-mcp
+            asset_name: shell-mcp-macos-amd64.tar.gz
 
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            artifact_name: bypass-bash.exe
-            asset_name: bypass-bash-windows-amd64.zip
+            artifact_name: shell-mcp.exe
+            asset_name: shell-mcp-windows-amd64.zip
 
     steps:
       - uses: actions/checkout@v4
@@ -50,13 +50,13 @@ jobs:
         if: matrix.os != 'windows-latest'
         run: |
           cd target/${{ matrix.target }}/release
-          tar -czf ../../../${{ matrix.asset_name }} bypass-bash
+          tar -czf ../../../${{ matrix.asset_name }} shell-mcp
 
       - name: Package Artifact (Windows)
         if: matrix.os == 'windows-latest'
         run: |
           cd target/${{ matrix.target }}/release
-          7z a ../../../${{ matrix.asset_name }} bypass-bash.exe
+          7z a ../../../${{ matrix.asset_name }} shell-mcp.exe
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2

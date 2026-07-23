@@ -1,7 +1,7 @@
-# bypass-bash ⚡
+# shell-mcp ⚡
 
-[![CI](https://github.com/karan-vk/bypass-bash/actions/workflows/ci.yml/badge.svg)](https://github.com/karan-vk/bypass-bash/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/karan-vk/bypass-bash?color=blue)](https://github.com/karan-vk/bypass-bash/releases)
+[![CI](https://github.com/karan-vk/shell-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/karan-vk/shell-mcp/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/karan-vk/shell-mcp?color=blue)](https://github.com/karan-vk/shell-mcp/releases)
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE-MIT)
 
 A blazingly fast, zero-overhead, highly performant Rust implementation of the [bad-bash-mcp](https://github.com/danroblewis/bad-bash-mcp) Model Context Protocol (MCP) server.
@@ -15,7 +15,7 @@ Provides raw, unsandboxed bash shell execution for Claude Code, Antigravity CLI 
 Run this single command in your terminal (Linux, macOS, Windows WSL):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/karan-vk/bypass-bash/master/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/karan-vk/shell-mcp/master/install.sh | sh
 ```
 
 The installer will automatically detect your platform and prompt you to pick which environment(s) to configure:
@@ -37,13 +37,13 @@ The installer will automatically detect your platform and prompt you to pick whi
 
 Copy and paste this prompt directly into any AI Assistant (Claude Code, Antigravity, Cursor, Windsurf, ChatGPT):
 
-> **"Please install the high-performance `bypass-bash` MCP server on my system. Execute `curl -fsSL https://raw.githubusercontent.com/karan-vk/bypass-bash/master/install.sh | sh` in terminal, select my active environment (Claude Code, Antigravity/AGY, Cursor, Windsurf, VS Code/Copilot, or Zed), and verify `bypass-bash` is configured in `mcpServers`."**
+> **"Please install the high-performance `shell-mcp` MCP server on my system. Execute `curl -fsSL https://raw.githubusercontent.com/karan-vk/shell-mcp/master/install.sh | sh` in terminal, select my active environment (Claude Code, Antigravity/AGY, Cursor, Windsurf, VS Code/Copilot, or Zed), and verify `shell-mcp` is configured in `mcpServers`."**
 
 ---
 
 ## ⚡ Performance Benchmarks: Rust vs Python Original
 
-| Metric | Python original (`uvx bad-bash-mcp`) | `bypass-bash` (Rust) | Improvement |
+| Metric | Python original (`uvx bad-bash-mcp`) | `shell-mcp` (Rust) | Improvement |
 | :--- | :--- | :--- | :--- |
 | **Startup Time** | ~450 ms (interpreter start + uvx) | **~1.2 ms** | **~375x faster** |
 | **Memory (RAM)** | ~35 - 50 MB | **< 3 MB** | **> 12x lighter** |
@@ -54,13 +54,13 @@ Copy and paste this prompt directly into any AI Assistant (Claude Code, Antigrav
 
 ## 🛠️ Manual MCP Configuration
 
-If you prefer to configure manually, add `bypass-bash` to your environment's JSON configuration:
+If you prefer to configure manually, add `shell-mcp` to your environment's JSON configuration:
 
 ```json
 {
   "mcpServers": {
-    "bypass-bash": {
-      "command": "/usr/local/bin/bypass-bash"
+    "shell-mcp": {
+      "command": "/usr/local/bin/shell-mcp"
     }
   }
 }
@@ -87,8 +87,8 @@ The server registers a single tool named `shell` that is 100% drop-in compatible
 
 ```bash
 # Clone & build
-git clone https://github.com/karan-vk/bypass-bash.git
-cd bypass-bash
+git clone https://github.com/karan-vk/shell-mcp.git
+cd shell-mcp
 cargo build --release
 
 # Run unit tests & clippy
