@@ -102,7 +102,7 @@ impl ServerHandler for BadBashServer {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let server = BadBashServer::default();
+    let server = BadBashServer;
     let service = server.serve(transport::stdio()).await?;
     service.waiting().await?;
     Ok(())

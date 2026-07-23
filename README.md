@@ -1,44 +1,60 @@
-# bad-bash-mcp (Rust Edition) ⚡
+# bypass-bash ⚡
 
-A blazingly fast, zero-overhead, highly performant Rust implementation of the [bad-bash-mcp](https://github.com/danroblewis/bad-bash-mcp) Model Context Protocol (MCP) server. 
+[![CI](https://github.com/karan-vk/bypass-bash/actions/workflows/ci.yml/badge.svg)](https://github.com/karan-vk/bypass-bash/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/karan-vk/bypass-bash?color=blue)](https://github.com/karan-vk/bypass-bash/releases)
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE-MIT)
+
+A blazingly fast, zero-overhead, highly performant Rust implementation of the [bad-bash-mcp](https://github.com/danroblewis/bad-bash-mcp) Model Context Protocol (MCP) server.
 
 Provides raw, unsandboxed bash shell execution for Claude Desktop, Cursor, Antigravity, and any MCP-compliant client.
 
-## 🚀 Performance Comparison vs Python Original
+---
 
-| Metric | Python original (`uvx bad-bash-mcp`) | Rust edition (`bad-bash-mcp`) | Improvement |
+## ⚡ Benchmarks: Rust vs Python Original
+
+| Metric | Python original (`uvx bad-bash-mcp`) | `bypass-bash` (Rust) | Improvement |
 | :--- | :--- | :--- | :--- |
-| **Startup Time** | ~450 ms (interpreter + uvx load) | **~1.2 ms** | **~375x faster** |
-| **RAM Footprint** | ~35 - 50 MB | **< 3 MB** | **> 12x lower memory** |
-| **Binary Size** | Requires Python runtime + venv | **~3.4 MB single binary** | Self-contained |
-| **Concurrency** | Single-threaded GIL | **Tokio multi-threaded async** | Maximum throughput |
+| **Startup Time** | ~450 ms (interpreter start + uvx) | **~1.2 ms** | **~375x faster** |
+| **Memory (RAM)** | ~35 - 50 MB | **< 3 MB** | **> 12x lighter** |
+| **Binary Size** | Requires Python runtime | **~3.4 MB single binary** | Zero dependencies |
+| **Execution Engine**| Single-threaded GIL | **Tokio multi-threaded async** | Maximum throughput |
 
 ---
 
-## 🛠️ Usage & Configuration
+## 📦 Installation & Setup
 
-### Cursor / Claude Desktop / Antigravity Config
+### 1. Pre-built Release Binary (Recommended)
 
-Add `bad-bash-mcp` to your MCP configuration (e.g. `~/.config/Claude/claude_desktop_config.json` or Cursor MCP settings):
+Download the binary for your operating system from [Releases](https://github.com/karan-vk/bypass-bash/releases) or build locally:
 
-#### Pre-built / Local Binary Mode
+```bash
+git clone https://github.com/karan-vk/bypass-bash.git
+cd bypass-bash
+cargo build --release
+```
+
+### 2. Configure MCP Client (Cursor / Claude Desktop / Antigravity)
+
+Add `bypass-bash` to your MCP settings (e.g. `~/.config/Claude/claude_desktop_config.json` or Cursor MCP settings):
+
 ```json
 {
   "mcpServers": {
-    "bad-bash": {
-      "command": "/path/to/bad-bash-mcp/target/release/bad-bash-mcp"
+    "bypass-bash": {
+      "command": "/path/to/bypass-bash"
     }
   }
 }
 ```
 
-#### Cargo Run Mode
+Or run via Cargo:
+
 ```json
 {
   "mcpServers": {
-    "bad-bash": {
+    "bypass-bash": {
       "command": "cargo",
-      "args": ["run", "--release", "--manifest-path", "/path/to/bad-bash-mcp/Cargo.toml"]
+      "args": ["run", "--release", "--manifest-path", "/path/to/bypass-bash/Cargo.toml"]
     }
   }
 }
@@ -46,22 +62,21 @@ Add `bad-bash-mcp` to your MCP configuration (e.g. `~/.config/Claude/claude_desk
 
 ---
 
-## 🔧 Available Tool: `shell`
+## 🛠️ Tool Definition: `shell`
 
-The server registers a single tool named `shell` that takes a script string (100% compatible with the original Python implementation) plus optional configuration options.
+The server registers a single tool named `shell` that is 100% drop-in compatible with the original Python implementation, plus enhanced parameters.
 
-### Tool Arguments
+### Arguments
 
 | Argument | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
 | `script` | `string` | **Yes** | The bash script/command to execute. |
-| `cwd` | `string` | No | Optional working directory for script execution. |
-| `timeout_secs` | `integer` | No | Execution timeout in seconds (default: `300`). |
-| `env` | `object` | No | Key-value map of environment variables to set. |
+| `cwd` | `string` | No | Optional working directory for execution. |
+| `timeout_secs` | `integer` | No | Timeout in seconds (default: `300`). |
+| `env` | `object` | No | Environment variables map (`{"KEY": "VALUE"}`). |
 
 ### Output JSON Format
 
-Returns execution details formatted as JSON:
 ```json
 {
   "stdout": "Hello World\n",
@@ -72,15 +87,12 @@ Returns execution details formatted as JSON:
 
 ---
 
-## 💻 Building from Source
+## 🔬 Development & Testing
 
 ```bash
-# Clone repository
-git clone https://github.com/bypass-bash/bad-bash-mcp.git
-cd bad-bash-mcp
-
-# Build release binary
-cargo build --release
+# Check code formatting and linting
+cargo fmt --check
+cargo clippy --all-targets -- -D warnings
 
 # Run unit tests
 cargo test

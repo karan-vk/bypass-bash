@@ -1,27 +1,22 @@
 [package]
-name = "bad-bash-mcp"
+name = "bypass-bash"
 version = "0.1.0"
 edition = "2024"
-authors = ["Antigravity Developer"]
-description = "A blazingly fast, ultra-lightweight Rust implementation of the bad-bash MCP server. Unsandboxed, high-performance shell access for Model Context Protocol clients."
+authors = ["Karan <karan-vk@users.noreply.github.com>"]
+description = "A blazingly fast, zero-overhead, unsandboxed Rust implementation of the bad-bash MCP server."
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/bypass-bash/bad-bash-mcp"
+repository = "https://github.com/karan-vk/bypass-bash"
+homepage = "https://github.com/karan-vk/bypass-bash"
+documentation = "https://docs.rs/bypass-bash"
 keywords = ["mcp", "model-context-protocol", "bash", "shell", "tokio"]
 categories = ["command-line-utilities", "development-tools"]
-
-[[bin]]
-name = "bad-bash-mcp"
-path = "src/main.rs"
 
 [dependencies]
 rmcp = { version = "2.2.0", features = ["schemars", "server", "transport-io"] }
 schemars = "1.2.1"
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
-tokio = { version = "1.53.1", features = ["full"] }
-
-[dev-dependencies]
 tokio = { version = "1.53.1", features = ["full"] }
 
 [profile.release]
