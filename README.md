@@ -10,6 +10,24 @@ Provides raw, unsandboxed bash shell execution for Claude Desktop, Cursor, Antig
 
 ---
 
+## 🚀 One-Command Install Anywhere
+
+Run this single command in your terminal (Linux, macOS, Windows WSL):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/karan-vk/bypass-bash/master/install.sh | sh
+```
+
+---
+
+## 🤖 One-Prompt AI Installer
+
+Copy and paste this prompt directly into your AI Assistant (Cursor, Claude, Antigravity, ChatGPT):
+
+> **"Please install the high-performance `bypass-bash` MCP server on my system. Execute `curl -fsSL https://raw.githubusercontent.com/karan-vk/bypass-bash/master/install.sh | sh` in terminal, locate my MCP config file (e.g. Cursor MCP settings or `claude_desktop_config.json`), add `bypass-bash` to `mcpServers` pointing to the installed binary, and verify execution."**
+
+---
+
 ## ⚡ Benchmarks: Rust vs Python Original
 
 | Metric | Python original (`uvx bad-bash-mcp`) | `bypass-bash` (Rust) | Improvement |
@@ -21,40 +39,15 @@ Provides raw, unsandboxed bash shell execution for Claude Desktop, Cursor, Antig
 
 ---
 
-## 📦 Installation & Setup
+## 🛠️ MCP Configuration
 
-### 1. Pre-built Release Binary (Recommended)
-
-Download the binary for your operating system from [Releases](https://github.com/karan-vk/bypass-bash/releases) or build locally:
-
-```bash
-git clone https://github.com/karan-vk/bypass-bash.git
-cd bypass-bash
-cargo build --release
-```
-
-### 2. Configure MCP Client (Cursor / Claude Desktop / Antigravity)
-
-Add `bypass-bash` to your MCP settings (e.g. `~/.config/Claude/claude_desktop_config.json` or Cursor MCP settings):
+Add `bypass-bash` to your MCP configuration (`claude_desktop_config.json` or Cursor MCP settings):
 
 ```json
 {
   "mcpServers": {
     "bypass-bash": {
-      "command": "/path/to/bypass-bash"
-    }
-  }
-}
-```
-
-Or run via Cargo:
-
-```json
-{
-  "mcpServers": {
-    "bypass-bash": {
-      "command": "cargo",
-      "args": ["run", "--release", "--manifest-path", "/path/to/bypass-bash/Cargo.toml"]
+      "command": "/usr/local/bin/bypass-bash"
     }
   }
 }
@@ -62,7 +55,7 @@ Or run via Cargo:
 
 ---
 
-## 🛠️ Tool Definition: `shell`
+## 🔧 Tool Definition: `shell`
 
 The server registers a single tool named `shell` that is 100% drop-in compatible with the original Python implementation, plus enhanced parameters.
 
@@ -75,24 +68,15 @@ The server registers a single tool named `shell` that is 100% drop-in compatible
 | `timeout_secs` | `integer` | No | Timeout in seconds (default: `300`). |
 | `env` | `object` | No | Environment variables map (`{"KEY": "VALUE"}`). |
 
-### Output JSON Format
-
-```json
-{
-  "stdout": "Hello World\n",
-  "stderr": "",
-  "returncode": 0
-}
-```
-
 ---
 
-## 🔬 Development & Testing
+## 🔬 Development & Building from Source
 
 ```bash
-# Check code formatting and linting
-cargo fmt --check
-cargo clippy --all-targets -- -D warnings
+# Clone & build
+git clone https://github.com/karan-vk/bypass-bash.git
+cd bypass-bash
+cargo build --release
 
 # Run unit tests
 cargo test
