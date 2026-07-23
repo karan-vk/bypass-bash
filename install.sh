@@ -90,7 +90,7 @@ fi
 success "Successfully installed bypass-bash to: $BINARY_PATH"
 
 # ==============================================================================
-# Helper to update JSON MCP configuration files
+# Helper to update JSON MCP configuration files (stripping comments if present)
 # ==============================================================================
 update_json_config() {
     FILE="$1"
@@ -100,7 +100,7 @@ update_json_config() {
 
     if command -v python3 >/dev/null 2>&1; then
         python3 - "$FILE" "$BIN_PATH" << 'EOF'
-import sys, json, os
+import sys, json, os, re
 
 file_path = sys.argv[1]
 bin_path = sys.argv[2]
@@ -109,8 +109,13 @@ data = {}
 if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
     try:
         with open(file_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except Exception:
+            content = f.read()
+        # Strip C-style comments & trailing commas for relaxed JSON (e.g. Zed settings)
+        content_clean = re.sub(r'//.*', '', content)
+        content_clean = re.sub(r'/\*.*?\*/', '', content_clean, flags=re.DOTALL)
+        content_clean = re.sub(r',\s*([}\]])', r'\1', content_clean)
+        data = json.loads(content_clean)
+    except Exception as e:
         data = {}
 
 if "mcpServers" not in data or not isinstance(data["mcpServers"], dict):
