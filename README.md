@@ -70,7 +70,7 @@ If you prefer to configure manually, add `shell-mcp` to your environment's JSON 
 
 ## 🔧 Tool Definition: `shell`
 
-The server registers a single tool named `shell` that is 100% drop-in compatible with the original Python implementation, plus enhanced parameters.
+The `shell` tool runs a bash script one-shot and is 100% drop-in compatible with the original Python implementation, plus enhanced parameters. For long-lived, interactive programs, see [Interactive Sessions](#️-interactive-sessions-pty) below.
 
 ### Arguments
 
@@ -80,6 +80,53 @@ The server registers a single tool named `shell` that is 100% drop-in compatible
 | `cwd` | `string` | No | Optional working directory for execution. |
 | `timeout_secs` | `integer` | No | Timeout in seconds (default: `300`). |
 | `env` | `object` | No | Environment variables map (`{"KEY": "VALUE"}`). |
+
+---
+
+## 🖥️ Interactive Sessions (PTY)
+
+Beyond the one-shot `shell` tool, the server exposes **persistent interactive sessions** backed by a real pseudo-terminal (PTY). Programs that expect a terminal — REPLs (`python3`, `node`), database clients (`psql`), `ssh`, and full-screen TUIs — behave exactly as they would in a normal terminal. Sessions stay alive across tool calls until you kill them, so state (shell variables, REPL context, working directory) persists.
+
+### Workflow
+
+1. **`shell_start`** — launch a session, get back a `session_id`.
+2. **`shell_write`** — send input (and control keys) to the session's stdin.
+3. **`shell_read`** — drain any new output produced since the last read.
+4. **`shell_list` / `shell_resize` / `shell_kill`** — manage sessions.
+
+### Tools
+
+| Tool | Purpose | Key Arguments |
+| :--- | :--- | :--- |
+| `shell_start` | Start an interactive PTY session (defaults to `bash`) | `command?`, `cwd?`, `env?`, `cols?` (120), `rows?` (30) |
+| `shell_write` | Send input to a session's stdin | `session_id`, `input`, `enter?` (append newline, default `true`) |
+| `shell_read` | Read new output since the last read | `session_id`, `timeout_ms?` (default `2000`) |
+| `shell_list` | List sessions with running state & exit code | *(none)* |
+| `shell_resize` | Resize the session's terminal | `session_id`, `cols`, `rows` |
+| `shell_kill` | Terminate a session and remove it | `session_id` |
+
+### Control keys
+
+`shell_write` sends raw bytes, so control characters work as expected — send `"\u0003"` for **Ctrl-C** (interrupt) or `"\u0004"` for **Ctrl-D** (EOF), typically with `"enter": false`.
+
+### Example
+
+```jsonc
+// Start a Python REPL
+shell_start { "command": "python3 -q -i" }        // → { "session_id": "sh-1", ... }
+
+// Define a variable, then use it — state persists across calls
+shell_write { "session_id": "sh-1", "input": "answer = 6 * 7" }
+shell_write { "session_id": "sh-1", "input": "print(answer)" }
+shell_read  { "session_id": "sh-1" }               // → { "output": "... 42 ...", "running": true }
+
+// Interrupt a hung command with Ctrl-C, then exit with Ctrl-D
+shell_write { "session_id": "sh-1", "input": "\u0003", "enter": false }
+shell_write { "session_id": "sh-1", "input": "\u0004", "enter": false }
+shell_kill  { "session_id": "sh-1" }
+```
+
+> **Note:** `shell_read` returns the raw terminal byte stream, which for interactive programs may include ANSI escape sequences and echoed keystrokes — that is authentic PTY behavior.
 
 ---
 

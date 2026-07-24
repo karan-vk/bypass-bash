@@ -13,6 +13,7 @@ keywords = ["mcp", "model-context-protocol", "bash", "shell", "tokio"]
 categories = ["command-line-utilities", "development-tools"]
 
 [dependencies]
+portable-pty = "0.9.0"
 rmcp = { version = "2.2.0", features = ["schemars", "server", "transport-io"] }
 schemars = "1.2.1"
 serde = { version = "1.0.229", features = ["derive"] }
