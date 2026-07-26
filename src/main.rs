@@ -197,8 +197,10 @@ fn json_result<T: Serialize>(value: &T) -> Result<CallToolResult, ErrorData> {
 #[tool_router]
 impl ShellMcpServer {
     /// Runs a string as a bash shell script (one-shot, non-interactive).
-    #[tool(description = "Runs a string as a bash shell script and returns its stdout, stderr, \
-                          and exit code once it finishes. Use this for non-interactive commands.")]
+    #[tool(
+        description = "Runs a string as a bash shell script and returns its stdout, stderr, \
+                          and exit code once it finishes. Use this for non-interactive commands."
+    )]
     async fn shell(
         &self,
         Parameters(args): Parameters<ShellArgs>,
@@ -208,12 +210,14 @@ impl ShellMcpServer {
     }
 
     /// Starts a persistent interactive shell session backed by a real PTY.
-    #[tool(description = "Starts a persistent interactive shell session backed by a real \
+    #[tool(
+        description = "Starts a persistent interactive shell session backed by a real \
                           pseudo-terminal (PTY). Programs such as REPLs (python3, node), \
                           database clients (psql), ssh, and full-screen TUIs behave as they \
                           would in a normal terminal. Returns a session_id used with \
                           shell_write, shell_read, shell_list, and shell_kill. When 'command' \
-                          is omitted an interactive bash shell is started.")]
+                          is omitted an interactive bash shell is started."
+    )]
     async fn shell_start(
         &self,
         Parameters(args): Parameters<StartArgs>,
@@ -287,10 +291,7 @@ impl ShellMcpServer {
             buffer,
             cursor: Mutex::new(0),
         });
-        self.sessions
-            .lock()
-            .unwrap()
-            .insert(id.clone(), session);
+        self.sessions.lock().unwrap().insert(id.clone(), session);
 
         json_result(&StartOutput {
             session_id: id,
@@ -299,11 +300,13 @@ impl ShellMcpServer {
     }
 
     /// Sends input to a running interactive session.
-    #[tool(description = "Sends input to a running interactive session's stdin. By default a \
+    #[tool(
+        description = "Sends input to a running interactive session's stdin. By default a \
                           newline (Enter) is appended; set 'enter' to false to send keystrokes \
                           without a newline. Control characters are honored: send \"\\u0003\" \
                           for Ctrl-C or \"\\u0004\" for Ctrl-D (EOF). Follow with shell_read to \
-                          see the resulting output.")]
+                          see the resulting output."
+    )]
     async fn shell_write(
         &self,
         Parameters(args): Parameters<WriteArgs>,
@@ -327,10 +330,12 @@ impl ShellMcpServer {
     }
 
     /// Reads output produced by a session since the previous read.
-    #[tool(description = "Reads output produced by an interactive session since the previous \
+    #[tool(
+        description = "Reads output produced by an interactive session since the previous \
                           read. Waits up to 'timeout_ms' (default 2000) for new output, \
                           returning early once output arrives and briefly settles. Reports \
-                          whether the process is still running and its exit code once done.")]
+                          whether the process is still running and its exit code once done."
+    )]
     async fn shell_read(
         &self,
         Parameters(args): Parameters<ReadArgs>,
@@ -372,8 +377,10 @@ impl ShellMcpServer {
     }
 
     /// Lists all known interactive sessions.
-    #[tool(description = "Lists all known interactive sessions with their command, running \
-                          state, and exit code. Sessions persist across calls until killed.")]
+    #[tool(
+        description = "Lists all known interactive sessions with their command, running \
+                          state, and exit code. Sessions persist across calls until killed."
+    )]
     async fn shell_list(&self) -> Result<CallToolResult, ErrorData> {
         let sessions = self.sessions.lock().unwrap();
         let mut list: Vec<SessionInfo> = sessions
@@ -393,8 +400,10 @@ impl ShellMcpServer {
     }
 
     /// Resizes the terminal of an interactive session.
-    #[tool(description = "Resizes the pseudo-terminal of an interactive session. Useful for \
-                          full-screen TUIs that lay out according to the terminal dimensions.")]
+    #[tool(
+        description = "Resizes the pseudo-terminal of an interactive session. Useful for \
+                          full-screen TUIs that lay out according to the terminal dimensions."
+    )]
     async fn shell_resize(
         &self,
         Parameters(args): Parameters<ResizeArgs>,
@@ -420,8 +429,10 @@ impl ShellMcpServer {
     }
 
     /// Terminates an interactive session and removes it.
-    #[tool(description = "Terminates an interactive session (killing its process if still \
-                          running) and removes it from the session table.")]
+    #[tool(
+        description = "Terminates an interactive session (killing its process if still \
+                          running) and removes it from the session table."
+    )]
     async fn shell_kill(
         &self,
         Parameters(args): Parameters<SessionRef>,
